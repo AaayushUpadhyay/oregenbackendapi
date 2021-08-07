@@ -139,7 +139,7 @@ app.get("/student/complete/:phone/",async (req,res)=>{
 
     }
     catch(e){
-        res.status(400).send(error);
+        res.status(400).send(e);
     }
 
 })
@@ -246,15 +246,15 @@ app.post("/course",async (req,res)=>{
 
 // getting all courses
 
-app.get("/student/all/",async (req,res)=>{
+app.get("/student/courses/all/",async (req,res)=>{
 
     try{
-        const allStudentData = await Student.find();
+        const allStudentData = await Course.find();
         res.send(allStudentData); 
 
     }
     catch(e){
-        res.status(400).send(error);
+        res.status(400).send(e);
     }
 
 })
