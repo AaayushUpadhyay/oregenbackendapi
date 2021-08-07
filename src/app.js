@@ -85,8 +85,8 @@ app.patch("/student/update/:id/",async (req,res)=>{
 
     }
     catch(e){
-        // res.status(400).send(e);
-        console.log(e);
+        res.status(400).send(e);
+        // console.log(e);
         
     }
 
@@ -122,7 +122,7 @@ app.get("/student/all/",async (req,res)=>{
 
     }
     catch(e){
-        res.status(400).send(error);
+        res.status(400).send(e);
     }
 
 })
