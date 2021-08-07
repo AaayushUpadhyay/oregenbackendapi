@@ -1,0 +1,17 @@
+{
+  "name": "oregen-schema",
+  "version": "1.0.0",
+  "description": "\"Student database schema\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ayush Upadhyay",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.13.5",
+    "mongoose-validator": "^2.1.0",
+    "validator": "^13.6.0"
+  }
+}
