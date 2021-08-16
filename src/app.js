@@ -3,6 +3,7 @@ require("./db/conn");
 const Student = require("./models/student");
 const Teacher = require("./models/teacher");
 const Course = require("./models/course");
+const Engineeringcollege = require("./models/college");
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -230,6 +231,8 @@ app.patch("/student/complete/:phone/",async (req,res)=>{
 
 // courses api
 
+// search for a course
+
 // creating a new course
 app.post("/course",async (req,res)=>{
     try{
@@ -249,12 +252,28 @@ app.post("/course",async (req,res)=>{
 app.get("/student/courses/all/",async (req,res)=>{
 
     try{
-        const allStudentData = await Course.find();
-        res.send(allStudentData); 
+        const allCourseData = await Course.find();
+        res.status(201).send(allCourseData); 
 
     }
     catch(e){
         res.status(400).send(e);
+        // console.log(e);
+    }
+
+})
+
+app.get("/student/search/:keyword/",async (req,res)=>{
+
+    try{
+        const keyword = req.params.keyword;
+        const searchData = await Course.find({ $text: { $search: `\"${keyword}\"` }});
+        res.status(201).send(searchData); 
+
+    }
+    catch(e){
+        // res.status(400).send(e);
+        console.log(e);
     }
 
 })
@@ -270,6 +289,38 @@ app.listen(port,()=>{
     
 })
 
+// college details
+
+app.get("/student/college/:instype/:insname/:category/:year/:gender/:quota/",async (req,res)=>{
+    try{
+        const insname = req.params.insname;
+        const instype = req.params.instype;
+        const category = req.params.category;
+        
+        const year = req.params.year;
+        const gender = req.params.gender;
+        const quota = req.params.quota;
+       
+        console.log(year,gender,quota);
+
+        const CollegeData = await Engineeringcollege.find({$and:[
+            {Institute_Type:instype},
+                {Institute_Name:insname},
+                {Seat_Type:category},
+               
+                {Year:year},
+                {Gender:gender},
+                {Quota:quota},
+                
+        ]});
+console.log("hello");
+            res.send(CollegeData);
+
+    }
+    catch(error){
+        res.status(400).send(error);
+    }
+})
 
 
 

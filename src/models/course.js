@@ -91,6 +91,8 @@ const courseSchema = new mongoose.Schema({
     }
 })
 
+courseSchema.index({ course_name: 'text', course_detail: 'text', course_category: 'text',course_subcategory: 'text' });
+
 const Course = new mongoose.model("courselist",courseSchema);
 
 module.exports = Course;
