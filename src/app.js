@@ -1,5 +1,8 @@
 const express = require("express");
 require("./db/conn");
+const jwt = require("jsonwebtoken");
+const auth = require("./middleware/auth");
+const cookieParser = require("cookie-parser");
 const Student = require("./models/student");
 const Teacher = require("./models/teacher");
 const Course = require("./models/course");
@@ -8,20 +11,41 @@ const Engineeringcollege = require("./models/college");
 const app = express();
 const port = process.env.PORT || 8000;
 app.use(express.json());
+app.use(cookieParser())
 
 // inserting data of new student
 app.post("/student",async (req,res)=>{
     try{
         const user = new Student(req.body);
     const createUser = await user.save();
-    res.status(201).send(createUser);
+    const token = await createUser.generateAuthToken();
+console.log("the token part  "+ token);
+
+
+    res.status(201).send([createUser,{'token':token}]);
 
     }
     catch(error){
-        res.status(400).send(error);
+        // res.status(400).send(error);
+        console.log(error)
     }
 })
 
+
+app.post('verify/',auth,async (req,res)=>{
+    try{
+       
+
+
+
+    res.status(201).send({'is_verified':true});
+
+    }
+    catch(error){
+        // res.status(400).send(error);
+        console.log(error)
+    }
+})
 
 
 // getting registration status of a single student based on his/her phone no

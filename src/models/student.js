@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 // student schema
 const mongoose = require('mongoose');
 const validator=require('validator');
@@ -123,11 +124,38 @@ const studentSchema = new mongoose.Schema({
         type:String,
         default:"",
         required:false
-    }
+    },
+    tokens:[{
+        token:{
+            type:String,
+        unique:true
+        }
+    }]
 
 
 
 })
+
+
+studentSchema.methods.generateAuthToken = async function(){
+    try
+    {
+        
+        let SECRET_KEY= "mynameiscareerkickservicesnikhilsachan";
+        const token = jwt.sign({_id:this._id},SECRET_KEY);
+        console.log(this)
+        this.tokens=this.tokens.concat({token:token});
+        await this.save();
+        return token;
+
+    }
+    catch(error){
+        // res.send("the error part " +error);
+       console.log("the error part " +error);
+
+    }
+}
+
 
 
 const Student = new mongoose.model("studentlist",studentSchema);
